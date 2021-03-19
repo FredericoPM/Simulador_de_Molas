@@ -18,3 +18,8 @@ main{
     font-size: 20pt;
     padding-bottom: 10pt;
 }
+.subTitle{
+    font-size: 16pt;
+    padding-bottom: 10pt;
+    padding-top: 10pt;
+}

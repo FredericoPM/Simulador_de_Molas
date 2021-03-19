@@ -3,7 +3,11 @@ let attachedToMouse;
 let currentWidth;
 let currentHeight;
 let menu;
-let input;
+let gratyInput;
+let massInput;
+let particleData;
+let movableParticle;
+let isPaused = false;
 function setMenu(){
     menu = select("#menu");
     menu.style("background-color", color(200));
@@ -17,17 +21,43 @@ function updateMenuSize(width, height){
 function updateCanvasSize(width, height){
     resizeCanvas(width*0.8, height);
 }
-function mousePressed(){
+function canvasPressed(){
     attachedToMouse = simulationController.searchParticle(mouseX, mouseY);
+    if(attachedToMouse != null){
+        particleData.style("display", "block");
+        massInput.value(attachedToMouse.mass);
+        movableParticle.checked(attachedToMouse.movable);
+    }else{
+        particleData.style("display", "none");
+    }
 }
 function setup() {
     currentWidth = windowWidth;
     currentHeight = windowHeight;
-    input = select("#gravityForce");
-    input.value(simulationController.gravity);
-    input.changed(() => simulationController.gravity = input.value());
+
+    gratyInput = select("#gravityForce");
+    gratyInput.value(simulationController.gravity);
+    gratyInput.changed(() => simulationController.gravity = gratyInput.value());
+
+    particleData = select("#particleData");
+    particleData.style("display", "none");
+    massInput = select("#particleMass");
+    massInput.changed(() => {
+        if(attachedToMouse != null)
+            attachedToMouse.mass = massInput.value();
+    });
+    movableParticle = select("#movable");
+    movableParticle.changed(() => {
+        if(attachedToMouse){
+            attachedToMouse.movable = movableParticle.checked();
+            attachedToMouse.velocity.set(0,0);
+        }
+    })
+
     setMenu();
+
     let canvas = createCanvas(windowWidth*0.8, windowHeight);
+    canvas.mousePressed(canvasPressed);
     simulationController.setup();
 }
 function draw() {
@@ -38,11 +68,13 @@ function draw() {
         updateMenuSize(windowWidth, windowHeight);
     }
     clear();
-    simulationController.displayElements();
-    simulationController.applyForcesMovableElements();
-    simulationController.updateElements();
-    if(mouseIsPressed && attachedToMouse){
-        attachedToMouse.velocity.set(0,0);
-        attachedToMouse.position.set(mouseX, mouseY);
+    if(!isPaused){
+        simulationController.displayElements();
+        simulationController.applyForcesMovableElements();
+        simulationController.updateElements();
+        if(mouseIsPressed && attachedToMouse && mouseX <= windowWidth*0.8){
+            attachedToMouse.velocity.set(0,0);
+            attachedToMouse.position.set(mouseX, mouseY);
+        }
     }
 }

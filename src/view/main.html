@@ -12,11 +12,22 @@
   </head>
   <body>
     <main>
-      <div id = "menu">
-        <h1 class = "title">Dados da simulação</h1>
-        <div class = "inputs">
+      <div id="menu">
+        <h1 class="title">Dados da simulação</h1>
+        <div class="inputs">
           <p>Aceleração da gravidade:</p>
-          <input type="number" id = "gravityForce" min = "0" oninput="this.value = Math.abs(this.value)"/>
+          <input type="number" id="gravityForce" min="0" oninput="this.value = Math.abs(this.value)"/>
+        </div>
+        <div id="particleData">
+          <h2 class="subTitle">Dados da particula</h2>
+          <div class="inputs">
+            <p>Massa:</p>
+            <input type="number" id="particleMass" min="0" oninput="this.value = Math.abs(this.value)"/>
+          </div>
+          <div class="inputs">
+            <p>Movel:</p>
+            <input type="checkbox" id="movable"/>
+          </div>
         </div>
       </div>
     </main>

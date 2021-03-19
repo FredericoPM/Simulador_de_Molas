@@ -2,52 +2,51 @@ class SimulationController{
     constructor(){
         this.particles = [];
         this.springs = [];
-        this.ancor;
         this.gravity = 1;
     }
     setup(){
-        this.ancor = new Particle(400, 0, 1, false);
         for(var i=0; i<3;i++){
-            this.particles[i] = new Particle(400, 200 + 100*i, 1, true);
-    
+            this.particles[i] = new Particle(400, 0 + 100*i, 1, true);
             if(i != 0){
-                this.springs[i] = new Spring(0.01, 100, this.particles[i-1], this.particles[i]);
+                this.springs[i-1] = new Spring(0.01, 100, this.particles[i-1], this.particles[i]);
             }else{
-                this.springs[i] = new Spring(0.01, 100, this.ancor, this.particles[i]);
+                this.particles[i].movable = false;
             }
         }
     }
     displayElements(){
         for(let spring of this.springs)
             spring.display();
-    
-        this.ancor.display();
-    
+
         for(let particle of this.particles)
             particle.display();
     }
     applyForcesMovableElements(){
+        let lastSpringForce;
         let springForce;
         let weight;
-        let totalForce;
+        let totalSpringForce;
         for(var i = 0; i < this.springs.length; i++){
+            totalSpringForce = 0;
+            lastSpringForce = springForce;
             springForce = this.springs[i].update();
             if(i == 0){
-                springForce.mult(-1);
                 weight = createVector(0, this.gravity * this.particles[i].systemMass);
-                totalForce = p5.Vector.add(springForce, weight);
+                this.particles[i].applyForce(p5.Vector.add(springForce, weight));   
             }else{
-                this.particles[i-1].applyForce(p5.Vector.add(springForce, totalForce));
-                springForce.mult(-1);
+                lastSpringForce.mult(-1);
+                totalSpringForce = p5.Vector.add(springForce, lastSpringForce);
                 weight = createVector(0, this.gravity * this.particles[i].systemMass);
-                totalForce = p5.Vector.add(springForce, weight);
-                if(i == this.springs.length-1)
-                    this.particles[i].applyForce(totalForce);
+                this.particles[i].applyForce(p5.Vector.add(totalSpringForce, weight));
+                if(i == this.springs.length-1){
+                    springForce.mult(-1);
+                    weight = createVector(0, this.gravity * this.particles[i+1].systemMass);
+                    this.particles[i+1].applyForce(p5.Vector.add(springForce, weight));
+                }
             }
         }
     }
     updateElements(){
-        this.ancor.update();
         for(let particle of this.particles)
             particle.update();
     }

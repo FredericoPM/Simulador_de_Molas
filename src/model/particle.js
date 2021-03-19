@@ -8,20 +8,22 @@ class Particle{
         this.conectedSprings = [];
     }
     get systemMass(){
-        let totalMass = this.mass;
+        let totalMass = this.movable ? this.mass : 0;
         for(let spring of this.conectedSprings){
-            if(spring.a.position.y < this.position.y){
+            if(spring.a.position.y < this.position.y && spring.a.movable){
                 totalMass += spring.a.systemMass;
-            }else if(spring.b.position.y < this.position.y){
+            }else if(spring.b.position.y < this.position.y && spring.b.movable){
                 totalMass += spring.b.systemMass;
             }
         }
         return totalMass;
     }
     applyForce(force){
-        let f = force.copy();
-        f.div(this.mass);
-        this.acceleration.add(f);
+        if(this.movable){
+            let f = force.copy();
+            f.div(this.mass);
+            this.acceleration.add(f);
+        }
     }
     update(){
         if(this.movable){
