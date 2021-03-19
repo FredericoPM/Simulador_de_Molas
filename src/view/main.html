@@ -1,6 +1,9 @@
 <html">
   <head>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./style/reset.css">
+    <link rel="stylesheet" href="./style/style.css">
     <script src="../../p5/p5.min.js"></script>
     <script src="../model/spring.js"></script>
     <script src="../model/particle.js"></script>
@@ -9,6 +12,13 @@
   </head>
   <body>
     <main>
+      <div id = "menu">
+        <h1 class = "title">Dados da simulação</h1>
+        <div class = "inputs">
+          <p>Aceleração da gravidade:</p>
+          <input type="number" id = "gravityForce" min = "0" oninput="this.value = Math.abs(this.value)"/>
+        </div>
+      </div>
     </main>
   </body>
 </html>

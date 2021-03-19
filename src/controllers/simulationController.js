@@ -7,7 +7,7 @@ class SimulationController{
     }
     setup(){
         this.ancor = new Particle(400, 0, 1, false);
-        for(var i=0; i<2;i++){
+        for(var i=0; i<3;i++){
             this.particles[i] = new Particle(400, 200 + 100*i, 1, true);
     
             if(i != 0){
