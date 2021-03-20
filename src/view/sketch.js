@@ -22,11 +22,16 @@ function updateCanvasSize(width, height){
     resizeCanvas(width*0.8, height);
 }
 function canvasPressed(){
-    attachedToMouse = simulationController.searchParticle(mouseX, mouseY);
+    let clickedParticle = simulationController.searchParticle(mouseX, mouseY);
+    if(attachedToMouse && (clickedParticle == null || clickedParticle != attachedToMouse)){
+        attachedToMouse.strokeColor = color(200);
+    }
+    attachedToMouse = clickedParticle;
     if(attachedToMouse != null){
         particleData.style("display", "block");
         massInput.value(attachedToMouse.mass);
         movableParticle.checked(attachedToMouse.movable);
+        attachedToMouse.strokeColor = color(171, 255, 77);
     }else{
         particleData.style("display", "none");
     }

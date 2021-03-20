@@ -3,6 +3,8 @@ class Particle{
         this.acceleration = createVector(0, 0);
         this.velocity = createVector(0,0);
         this.position= createVector(x, y);
+        this.strokeColor = color(200);
+        this.fillColor = color(123);
         this.mass = mass;
         this.movable = movable;
         this.conectedSprings = [];
@@ -34,9 +36,9 @@ class Particle{
         }
     }
     display(){
-        stroke(200);
+        stroke(this.strokeColor);
         strokeWeight(2);
-        fill(127);
+        fill(this.fillColor);
         circle(this.position.x, this.position.y, 60);
     }
 }
